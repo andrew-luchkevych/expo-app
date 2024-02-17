@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SettingsStoreProps, settingsStoreInitialValue, useSettingsStore } from "./store";
+import { SettingsStore, SettingsStoreProps, settingsStoreInitialValue, useSettingsStore } from "./store";
 
 const STORAGE_KEY = "user_settings";
 
@@ -18,6 +18,7 @@ export const useInitSettingsStore = () => {
                     ...settings,
                     ...JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) || "{}"),
                 };
+                SettingsStore.setState(settings);
             } catch {
                 console.warn("No settings found");
                 await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
@@ -33,10 +34,6 @@ export const useInitSettingsStore = () => {
     useEffect(() => {
         if (isReady) {
             AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-            (async () => {
-                console.log("settings updated");
-                console.log(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) || "{}"));
-            })();
         }
     }, [isReady, settings]);
 

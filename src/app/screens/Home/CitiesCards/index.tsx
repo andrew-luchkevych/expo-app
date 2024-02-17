@@ -5,7 +5,7 @@ import { useCallback, useRef } from "react";
 import { CityEntity } from "@app/redux/entities/Cities/types";
 import { keyExtractor } from "@app/redux/entities/Cities";
 import { CitiesStore } from "./store";
-import CityView from "@app/screens/Home/CitiesCards/CityView";
+import CityView from "@app/components/CityView";
 import Footer from "../Footer";
 import { useCities } from "@app/services/Settings/store";
 

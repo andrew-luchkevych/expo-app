@@ -19,6 +19,7 @@ export enum WeatherConditions {
     thunderstorm = "thunderstorm",
     snow = "snow",
     mist = "mist",
+    fog = "fog",
 }
 
 export interface WeatherBase {

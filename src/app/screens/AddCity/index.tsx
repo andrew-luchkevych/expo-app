@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Input, InputField, Text, View, Spinner, Button, ButtonText } from "@gluestack-ui/themed";
+import { Text, View, Spinner, Button, ButtonText } from "@gluestack-ui/themed";
 import debounce from "lodash/debounce";
 import CitiesApi, { keyExtractor } from "@app/redux/entities/Cities";
 import CityListItem from "./CityListItem";
@@ -8,6 +8,7 @@ import { useHeaderHeight } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import { SettingsStore } from "@app/services/Settings/store";
 import { CityEntity } from "@app/redux/entities/Cities/types";
+import ClearableInput from "@app/components/ClearableInput";
 
 const skipChars = 3;
 
@@ -39,7 +40,6 @@ export const AddCityModal = () => {
     }, [navigation]);
 
     const onAdd = useCallback(() => {
-        console.log(city);
         if (city) {
             navigation.goBack();
             SettingsStore.setValue("cities", [...SettingsStore.getState().cities, city]);
@@ -54,18 +54,23 @@ export const AddCityModal = () => {
         <KeyboardAvoidingView
             behavior="padding"
             style={{ flex: 1 }}
-            keyboardVerticalOffset={height + Platform.OS === "ios" ? 72 : 0}
+            keyboardVerticalOffset={height + (Platform.OS === "ios" ? 72 : 0)}
             enabled
         >
             <View flex={1} p="$4" pb="$6">
-                <Input variant="rounded" mb="$4">
-                    <InputField value={v} placeholder="Start typing..." onChangeText={onChange} p="$2" />
-                </Input>
+                <View pb="$4">
+                    <ClearableInput
+                        value={v}
+                        placeholder="Start typing..."
+                        onChangeText={onChange}
+                        helperText={
+                            v.length < skipChars
+                                ? `Please type at least ${skipChars} characters to start searching`
+                                : ""
+                        }
+                    />
+                </View>
                 <View flex={1}>
-                    {v.length < skipChars ? (
-                        <Text>Please type at least {skipChars} characters to start searching</Text>
-                    ) : null}
-
                     {v.length >= skipChars && data?.length ? (
                         <FlatList<(typeof data)[0]>
                             data={data}

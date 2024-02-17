@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Animated, LayoutChangeEvent } from "react-native";
-import { Input, InputField, HStack, Button, ButtonText } from "@gluestack-ui/themed";
+import { Input, InputField, HStack, Button, ButtonText, Text } from "@gluestack-ui/themed";
 
 export interface ClearableInputProps {
     value: string;
     placeholder: string;
+    helperText?: string;
     onChangeText: (value: string) => void;
 }
 export const ClearableInput = (props: ClearableInputProps) => {
-    const { value, placeholder, onChangeText } = props;
+    const { value, placeholder, onChangeText, helperText } = props;
     const animation = useRef(new Animated.Value(0));
     const btnAnimation = useRef(new Animated.Value(0));
     const [btnWidth, setBtnWidth] = useState(0);
@@ -58,6 +59,9 @@ export const ClearableInput = (props: ClearableInputProps) => {
                 <Input variant="rounded" width="100%">
                     <InputField value={value} placeholder={placeholder} onChangeText={onChangeText} p="$2" />
                 </Input>
+                <Text size="sm" px="$2">
+                    {helperText}
+                </Text>
             </Animated.View>
             {value && (
                 <Animated.View

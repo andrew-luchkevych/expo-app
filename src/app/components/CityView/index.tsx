@@ -1,6 +1,6 @@
-import { Heading, ScrollView, Spinner, View } from "@gluestack-ui/themed";
-import { useWindowWidth } from "../../../../components/DimensionsProvider/store";
-import { memo, useEffect } from "react";
+import { Heading, ScrollView, Spinner, View, Text } from "@gluestack-ui/themed";
+import { useWindowWidth } from "../DimensionsProvider/store";
+import { memo } from "react";
 import { CityEntity } from "@app/redux/entities/Cities/types";
 import useWeather from "./useWeather";
 import WeatherView from "./weather";
@@ -15,10 +15,6 @@ export const CityView = memo((props: CityViewProps) => {
     const width = useWindowWidth();
     const { data, isLoading, isError } = useWeather(city);
 
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
-
     const description = data?.weather?.[0]?.description || null;
     return (
         <ScrollView width={width} p="$4">
@@ -30,7 +26,11 @@ export const CityView = memo((props: CityViewProps) => {
                     <Spinner size="large" />
                 </View>
             )}
-            {isError && <View></View>}
+            {isError && (
+                <View py="$4" px="$2">
+                    <Text>Sorry, looks like we can not load wether for this city for you.</Text>
+                </View>
+            )}
             {data && (
                 <>
                     {description && <WeatherView description={description} />}

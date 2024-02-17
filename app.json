@@ -21,7 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#091320"
-      }
+      },
+      "package": "com.avenga.teskmobileapp"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"

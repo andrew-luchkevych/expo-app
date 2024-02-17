@@ -1,5 +1,5 @@
 import { Heading, View } from "@gluestack-ui/themed";
-import WeatherIcon from "../../../../components/WeatherIcon";
+import WeatherIcon from "../WeatherIcon";
 import { Weather } from "@app/redux/entities/Weather/types";
 import { ComponentProps } from "react";
 

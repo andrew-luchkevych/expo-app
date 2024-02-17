@@ -1,5 +1,5 @@
 import { Box, Heading } from "@gluestack-ui/themed";
-import { useWindowWidth } from "../../../../components/DimensionsProvider/store";
+import { useWindowWidth } from "../DimensionsProvider/store";
 
 export interface CardProps {
     title: string;
@@ -8,7 +8,6 @@ export interface CardProps {
 
 export const Card = (props: CardProps) => {
     const width = useWindowWidth();
-    console.log("width", width / 2 - 16);
     const boxWidth = Math.min(width / 2 - 16, 200);
 
     return (

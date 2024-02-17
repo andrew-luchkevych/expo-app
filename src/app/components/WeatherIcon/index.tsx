@@ -16,6 +16,7 @@ const getIconSource = (condition: WeatherConditions) => {
         return hours >= 20 ? require("@assets/weather/moon-cloudy.png") : require("@assets/weather/sun-cloudy.png");
     }
 
+    const c = (condition as string).toLowerCase();
     switch (condition) {
         case WeatherConditions.scatteredClouds:
         case WeatherConditions.brokenClouds:
@@ -29,9 +30,11 @@ const getIconSource = (condition: WeatherConditions) => {
         case WeatherConditions.snow:
             return require("@assets/weather/snow.png");
         case WeatherConditions.mist:
+        case WeatherConditions.fog:
             return require("@assets/weather/mist.png");
         default:
-            if ((condition as string).includes("cloud")) return require("@assets/weather/cloud.png");
+            if (c.includes("cloud")) return require("@assets/weather/cloud.png");
+            if (c.includes("rain")) return require("@assets/weather/heavy-rain.png");
     }
 };
 
