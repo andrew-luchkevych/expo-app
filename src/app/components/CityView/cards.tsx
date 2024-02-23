@@ -1,7 +1,7 @@
 import { View } from "@gluestack-ui/themed";
-import { UNITS, Weather } from "@app/redux/entities/Weather/types";
 import { useUnits } from "@app/services/Settings/store";
 import Card from "./card";
+import { OneCallWeatherBase, UNITS } from "@app/redux/entities/OneCall/types";
 
 const getWindSpeed = (units: UNITS) => {
     switch (units) {
@@ -25,19 +25,29 @@ const getVisibility = (m: number, units: UNITS) => {
 };
 
 export interface TemperatureViewProps {
-    data: Weather["main"];
-    visibility: Weather["visibility"];
-    wind?: Weather["wind"];
+    data: Pick<
+        OneCallWeatherBase,
+        "humidity" | "pressure" | "visibility" | "uvi" | "wind_deg" | "wind_gust" | "wind_speed"
+    >;
+    mode: "full" | "partial";
 }
 export const WeatherCards = (props: TemperatureViewProps) => {
-    const { data, wind, visibility } = props;
+    const {
+        data: { humidity, pressure, visibility, uvi, wind_deg, wind_gust, wind_speed },
+        mode,
+    } = props;
     const units = useUnits();
     return (
-        <View flexDirection="row" justifyContent="flex-start" flexWrap="wrap" pt="$8">
-            <Card title="humidity" value={`${data.humidity}%`} />
-            <Card title="pressure" value={`${data.pressure} hPa`} />
-            {wind && <Card title="wind" value={`${wind.speed} ${getWindSpeed(units)}`} />}
+        <View flexDirection="row" justifyContent="flex-start" flexWrap="wrap" pt="$4" pb="$4">
+            {mode === "full" && (
+                <>
+                    <Card title="UVI index" value={`${Math.round(uvi)}`} />
+                    <Card title="humidity" value={`${humidity}%`} />
+                    <Card title="pressure" value={`${pressure} hPa`} />
+                </>
+            )}
             <Card title="visibility" value={getVisibility(visibility, units)} />
+            <Card title="wind" value={`${wind_speed} ${getWindSpeed(units)}`} />
         </View>
     );
 };

@@ -33,7 +33,9 @@ export const App = () => {
                                     <Stack.Screen name={routes.addCity} component={AddCityModal} />
                                     <Stack.Screen name={routes.settings} component={Settings} />
                                 </Stack.Group>
-                                <Stack.Group screenOptions={{ presentation: "modal", headerTitle: "" }}>
+                                <Stack.Group
+                                    screenOptions={{ presentation: "modal", headerShown: false, headerTitle: "" }}
+                                >
                                     <Stack.Screen name={routes.city} component={City} />
                                 </Stack.Group>
                             </Stack.Navigator>

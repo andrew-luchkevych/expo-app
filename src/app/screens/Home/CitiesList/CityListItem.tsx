@@ -1,13 +1,14 @@
 import { Box, HStack, VStack, Text, View, Heading, Spinner } from "@gluestack-ui/themed";
 import { CityEntity } from "@app/redux/entities/Cities/types";
 import { memo, useCallback } from "react";
-import useWeather from "../../../components/CityView/useWeather";
+import useWeather from "@app/hooks/useWeather";
 import WeatherIcon from "@app/components/WeatherIcon";
 import { useUnits } from "@app/services/Settings/store";
 import { getTemperatureSign } from "@app/utils/temperature";
 import { useNavigation } from "@react-navigation/native";
 import routes from "@app/routes";
 import { TouchableOpacity } from "react-native";
+import useTodaySets from "@app/hooks/useTodaySets";
 
 export interface CityListItemProps {
     city: CityEntity;
@@ -17,13 +18,17 @@ export const CityListItem = memo((props: CityListItemProps) => {
     const { city: c } = props;
     const { data, isLoading } = useWeather(c);
     const navigation = useNavigation();
-    const description = data?.weather?.[0]?.description || null;
     const units = useUnits();
     const tSign = getTemperatureSign(units);
 
     const onPress = useCallback(() => {
         navigation.navigate(routes.city, { city: c });
     }, [navigation, c]);
+
+    const weather = data?.current?.weather?.[0] || null;
+    const temp = data?.current?.temp || null;
+    const todaySets = useTodaySets(data?.daily || null);
+
     return (
         <Box
             borderBottomWidth="$1"
@@ -38,9 +43,11 @@ export const CityListItem = memo((props: CityListItemProps) => {
             <TouchableOpacity onPress={onPress}>
                 <HStack space="md" alignItems="center" justifyContent="space-between">
                     <View width={100} height={60}>
-                        {description && (
+                        {weather && (
                             <WeatherIcon
-                                condition={description}
+                                code={weather.id}
+                                description={weather.description}
+                                sets={todaySets}
                                 style={{ width: 100, height: 60 }}
                                 resizeMode="contain"
                             />
@@ -58,9 +65,9 @@ export const CityListItem = memo((props: CityListItemProps) => {
                         {isLoading ? (
                             <Spinner />
                         ) : (
-                            data.main && (
+                            temp !== null && (
                                 <Heading size="2xl" textAlign="center">
-                                    {Math.round(data.main.temp)}
+                                    {Math.round(temp)}
                                     {tSign}
                                 </Heading>
                             )

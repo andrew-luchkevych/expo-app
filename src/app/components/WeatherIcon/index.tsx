@@ -1,46 +1,17 @@
-import { WeatherConditions } from "@app/redux/entities/Weather/types";
 import { memo } from "react";
 import { Image, ImageProps } from "react-native";
+import { SetsData, getIconSource } from "./helpers";
 
-export interface WeatherIconProps extends Omit<ImageProps, "source"> {
-    condition: WeatherConditions;
+export interface WeatherIconOwnProps {
+    code: number;
+    description: string;
+    sets?: SetsData;
 }
-
-const getIconSource = (condition: WeatherConditions) => {
-    const hours = new Date().getHours();
-    if (condition === WeatherConditions.clearSky) {
-        return hours >= 20 ? require("@assets/weather/moon.png") : require("@assets/weather/sunny.png");
-    }
-
-    if (condition === WeatherConditions.fewClouds) {
-        return hours >= 20 ? require("@assets/weather/moon-cloudy.png") : require("@assets/weather/sun-cloudy.png");
-    }
-
-    const c = (condition as string).toLowerCase();
-    switch (condition) {
-        case WeatherConditions.scatteredClouds:
-        case WeatherConditions.brokenClouds:
-            return require("@assets/weather/cloud.png");
-        case WeatherConditions.rain:
-            return require("@assets/weather/heavy-rain.png");
-        case WeatherConditions.showerRain:
-            return require("@assets/weather/shower-rain.png");
-        case WeatherConditions.thunderstorm:
-            return require("@assets/weather/thunderstorm.png");
-        case WeatherConditions.snow:
-            return require("@assets/weather/snow.png");
-        case WeatherConditions.mist:
-        case WeatherConditions.fog:
-            return require("@assets/weather/mist.png");
-        default:
-            if (c.includes("cloud")) return require("@assets/weather/cloud.png");
-            if (c.includes("rain")) return require("@assets/weather/heavy-rain.png");
-    }
-};
+export type WeatherIconProps = Omit<ImageProps, "source"> & WeatherIconOwnProps;
 
 export const WeatherIcon = memo((props: WeatherIconProps) => {
-    const { condition, ...rest } = props;
-    const src = getIconSource(condition);
+    const { code, description, sets, ...rest } = props;
+    const src = getIconSource(code, description, sets);
     return <Image {...rest} source={src || ""} />;
 });
 

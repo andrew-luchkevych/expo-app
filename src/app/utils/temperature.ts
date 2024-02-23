@@ -1,4 +1,4 @@
-import { UNITS } from "@app/redux/entities/Weather/types";
+import { UNITS } from "@app/redux/entities/OneCall/types";
 
 export const getTemperatureSign = (units: UNITS) => {
     switch (units) {

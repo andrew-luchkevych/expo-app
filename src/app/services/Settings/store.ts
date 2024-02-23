@@ -1,6 +1,6 @@
 import createStore from "@app/utils/store";
 import { CityEntity } from "@app/redux/entities/Cities/types";
-import { UNITS } from "@app/redux/entities/Weather/types";
+import { UNITS } from "@app/redux/entities/OneCall/types";
 
 export interface SettingsStoreProps {
     units: UNITS;

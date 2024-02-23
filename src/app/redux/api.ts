@@ -39,7 +39,7 @@ export const api = createApi({
         }
     },
     endpoints: () => ({}),
-    keepUnusedDataFor: 604800, // 7 days
+    keepUnusedDataFor: 604800, // 7 days in seconds
 });
 
 export default api;
